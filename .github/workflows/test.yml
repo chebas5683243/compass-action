@@ -15,6 +15,6 @@ jobs:
         uses: chebas5683243/compass-action@v1
         with:
           metricSourceId: ${{ secrets.METRIC_SOURCE_ID }}
-          value: ${{ github.event.inputs.value }}
+          value: ${{ vars.VALUE }}
           email: ${{ secrets.ATLASSIAN_EMAIL }}
           apiToken: ${{ secrets.ATLASSIAN_API_TOKEN }}
