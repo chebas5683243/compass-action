@@ -1,0 +1,20 @@
+name: Test Compass Action Manually
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run local GitHub Action
+        uses: chebas5683243/compass-action@v1
+        with:
+          metricSourceId: ${{ secrets.METRIC_SOURCE_ID }}
+          value: ${{ github.event.inputs.value }}
+          email: ${{ secrets.ATLASSIAN_EMAIL }}
+          apiToken: ${{ secrets.ATLASSIAN_API_TOKEN }}
