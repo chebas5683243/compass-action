@@ -1,0 +1,36 @@
+name: "Send Compass Metric"
+description: "Report a metric to Atlassian Compass"
+author: "Sebastian Flores<fles.sebas26@gmail.com>"
+inputs:
+  metricSourceId:
+    description: "Compass metric source ID"
+    required: true
+  value:
+    description: "Metric value"
+    required: true
+  email:
+    description: "Atlassian email"
+    required: true
+  apiToken:
+    description: "Atlassian API token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+        cat > payload.json <<EOF
+        {
+          "metricSourceId": "${{ inputs.metricSourceId }}",
+          "value": ${{ inputs.value }},
+          "timestamp": "$TIMESTAMP"
+        }
+        EOF
+
+        curl --request POST \
+          --url "https://designli.atlassian.net/gateway/api/compass/v1/metrics" \
+          --user "${{ inputs.email }}:${{ inputs.apiToken }}" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --data "@payload.json"
